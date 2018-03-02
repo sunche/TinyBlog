@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tinyblog.Service", "Tinyblog.Service\Tinyblog.Service.csproj", "{407B6B99-B6CD-4AF0-BC30-F663E486D817}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tinyblog.DataLayer", "Tinyblog.DataLayer\Tinyblog.DataLayer.csproj", "{063E464C-C5C7-4628-A5B5-E85CAC3B0501}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tinyblog.Tests", "Tinyblog.Tests\Tinyblog.Tests.csproj", "{21A341E1-FAF3-4B31-8001-BFACF1F0E487}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{407B6B99-B6CD-4AF0-BC30-F663E486D817}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{407B6B99-B6CD-4AF0-BC30-F663E486D817}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{407B6B99-B6CD-4AF0-BC30-F663E486D817}.Release|Any CPU.Build.0 = Release|Any CPU
+		{063E464C-C5C7-4628-A5B5-E85CAC3B0501}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{063E464C-C5C7-4628-A5B5-E85CAC3B0501}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{063E464C-C5C7-4628-A5B5-E85CAC3B0501}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{063E464C-C5C7-4628-A5B5-E85CAC3B0501}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21A341E1-FAF3-4B31-8001-BFACF1F0E487}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21A341E1-FAF3-4B31-8001-BFACF1F0E487}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21A341E1-FAF3-4B31-8001-BFACF1F0E487}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21A341E1-FAF3-4B31-8001-BFACF1F0E487}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

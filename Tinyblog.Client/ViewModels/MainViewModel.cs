@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Autofac;
 using Tinyblog.Client.Services;
 using Tinyblog.Contracts.Data;
 
@@ -14,15 +13,19 @@ namespace Tinyblog.Client.ViewModels
     /// <seealso cref="Tinyblog.Client.ViewModels.ViewModelBase"/>
     public class MainViewModel : ViewModelBase
     {
-        private IArticleService articleService;
+        private readonly IArticleService articleService;
         private ObservableCollection<ArticleNavItemViewModel> articlesNav;
+
+        public MainViewModel()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainViewModel"/> class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(IArticleService service)
         {
-            ResolveDependencies();
+            articleService = service;
             InitData();
         }
 
@@ -43,15 +46,6 @@ namespace Tinyblog.Client.ViewModels
         {
             IEnumerable<ArticlePreviewInfo> articles = articleService.GetArticlePreviews();
             ArticlesNav = new ObservableCollection<ArticleNavItemViewModel>(articles.Select(x => new ArticleNavItemViewModel(x)));
-        }
-
-        //TODO: перенести логику в app.cs.
-        private void ResolveDependencies()
-        {
-            var builder = new ContainerBuilder();
-            builder.RegisterModule(new TinyblogModule());
-            var container = builder.Build();
-            articleService = container.Resolve<IArticleService>();
         }
     }
 }

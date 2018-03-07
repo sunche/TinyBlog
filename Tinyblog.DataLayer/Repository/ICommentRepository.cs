@@ -15,6 +15,6 @@ namespace Tinyblog.DataLayer.Repository
         /// </summary>
         /// <param name="articleId">The article identifier.</param>
         /// <returns>Collection of comments.</returns>
-        IList<Comment> GetForArticle(Guid articleId);
+        List<Comment> GetForArticle(Guid articleId);
     }
 }

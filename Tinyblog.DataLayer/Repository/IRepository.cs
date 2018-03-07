@@ -32,6 +32,6 @@ namespace Tinyblog.DataLayer.Repository
         /// Gets all.
         /// </summary>
         /// <returns>Entities' collection.</returns>
-        IList<T> GetAll();
+        List<T> GetAll();
     }
 }

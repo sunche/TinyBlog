@@ -1,0 +1,29 @@
+﻿<Window x:Class="Tinyblog.Client.Views.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tinyblog.Client.Views"
+        xmlns:viewModels="clr-namespace:Tinyblog.Client.ViewModels"
+        mc:Ignorable="d"
+        Title="MainView" Height="300" Width="300">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModels:ArticleNavItemViewModel}">
+            <Border BorderBrush="LightGray" BorderThickness="1">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding Title}" />
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+    <Window.DataContext>
+        <viewModels:MainViewModel />
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <local:ArticlesView Grid.Column="0" />
+    </Grid>
+</Window>

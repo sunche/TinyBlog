@@ -76,7 +76,7 @@ namespace Tinyblog.DataLayer.Repository.Implementations
         /// <returns>
         /// Entities' collection.
         /// </returns>
-        public IList<T> GetAll()
+        public List<T> GetAll()
         {
             using (IDbConnection db = GetConnection())
             {

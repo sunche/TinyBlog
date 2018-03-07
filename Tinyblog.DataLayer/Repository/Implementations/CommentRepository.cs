@@ -37,7 +37,7 @@ namespace Tinyblog.DataLayer.Repository.Implementations
         /// <returns>
         /// Collection of comments.
         /// </returns>
-        public IList<Comment> GetForArticle(Guid articleId)
+        public List<Comment> GetForArticle(Guid articleId)
         {
             using (IDbConnection db = GetConnection())
             {

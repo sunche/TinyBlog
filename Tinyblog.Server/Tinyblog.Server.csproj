@@ -61,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tinyblog.Common\Tinyblog.Common.csproj">
+      <Project>{EA167F42-6F25-48FC-BBF6-4203A4F28FF9}</Project>
+      <Name>Tinyblog.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tinyblog.Contracts\Tinyblog.Contracts.csproj">
       <Project>{a25a7100-1e34-468e-b701-9aad8e211cc1}</Project>
       <Name>Tinyblog.Contracts</Name>

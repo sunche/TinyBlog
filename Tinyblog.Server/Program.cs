@@ -2,12 +2,10 @@
 using System.Configuration;
 using System.ServiceModel;
 using Autofac;
-using Tinyblog.Contracts.Services;
-using Tinyblog.DataLayer.Repository;
+using Tinyblog.Common.Log.Implementations;
 using Tinyblog.DataLayer.Repository.Implementations;
 using Tinyblog.Server.ServiceBehavior;
 using Tinyblog.Services;
-using Tinyblog.Services.Processors;
 using Tinyblog.Services.Processors.Implementations;
 
 namespace Tinyblog.Server
@@ -34,7 +32,9 @@ namespace Tinyblog.Server
             var builder = new ContainerBuilder();
             var connectionString = ConfigurationManager.ConnectionStrings["TinyblogPostgre"].ConnectionString;
             builder.Register(x => new ArticleRepository(connectionString)).AsImplementedInterfaces();
+            builder.Register(x => new CommentRepository(connectionString)).AsImplementedInterfaces();
             builder.RegisterType<ArticleProcessor>().AsImplementedInterfaces();
+            builder.RegisterType<SerilogLogger>().AsImplementedInterfaces();
             builder.RegisterType<TinyblogController>().AsSelf();
             return builder.Build();
         }

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Nelibur.Sword, Version=3.0.3.225, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nelibur.Sword.3.1.8\lib\net45\Nelibur.Sword.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
@@ -59,6 +62,9 @@
       <Project>{063e464c-c5c7-4628-a5b5-e85cac3b0501}</Project>
       <Name>Tinyblog.DataLayer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

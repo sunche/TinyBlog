@@ -13,13 +13,13 @@ namespace Tinyblog.DataLayer.Model
         public Guid ArticleId { get; set; }
 
         /// <summary>
+        /// Gets or sets the author.
+        /// </summary>
+        public string Author { get; set; }
+
+        /// <summary>
         /// Gets or sets the text.
         /// </summary>
         public string Text { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user.
-        /// </summary>
-        public string UserName { get; set; }
     }
 }

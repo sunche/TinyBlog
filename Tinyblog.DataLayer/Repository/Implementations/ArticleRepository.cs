@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Tinyblog.DataLayer.Model;
 
 namespace Tinyblog.DataLayer.Repository.Implementations
@@ -33,9 +34,11 @@ namespace Tinyblog.DataLayer.Repository.Implementations
         /// <returns>
         /// Insert script.
         /// </returns>
-        protected override string GetInsertScript(Article entity)
+        protected override KeyValuePair<string, object> GetInsertScript(Article entity)
         {
-            return $"INSERT INTO {TableName} (id,text,title) VALUES('{entity.Id}','{entity.Text}','{entity.Title}')";
+            return new KeyValuePair<string, object>(
+                $"INSERT INTO {TableName} (id,text,title, author) VALUES((@Id),(@Text),(@Title),(@Author))",
+                new { entity.Id, entity.Text, entity.Title, entity.Author });
         }
     }
 }

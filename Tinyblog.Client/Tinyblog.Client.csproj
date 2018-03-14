@@ -37,6 +37,9 @@
     <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="Nelibur.Sword, Version=3.0.3.225, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nelibur.Sword.3.1.8\lib\net45\Nelibur.Sword.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -63,15 +66,28 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ClientBuilder.cs" />
+    <Compile Include="Common\Command.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\IArticleService.cs" />
     <Compile Include="Services\Implementations\ArticleService.cs" />
     <Compile Include="TinyblogModule.cs" />
     <Compile Include="ViewModels\ArticleNavItemViewModel.cs" />
+    <Compile Include="ViewModels\ArticleViewModel.cs" />
+    <Compile Include="ViewModels\CommentViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\ArticlesView.xaml.cs">
-      <DependentUpon>ArticlesView.xaml</DependentUpon>
+    <Compile Include="Views\ArticleNavView.xaml.cs">
+      <DependentUpon>ArticleNavView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ArticleView.xaml.cs">
+      <DependentUpon>ArticleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CommentsView.xaml.cs">
+      <DependentUpon>CommentsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -80,9 +96,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\ArticlesView.xaml">
+    <Page Include="Views\ArticleNavView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ArticleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CommentsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
       <SubType>Designer</SubType>
@@ -121,6 +149,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Tinyblog.Common\Tinyblog.Common.csproj">
+      <Project>{EA167F42-6F25-48FC-BBF6-4203A4F28FF9}</Project>
+      <Name>Tinyblog.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Tinyblog.Contracts\Tinyblog.Contracts.csproj">
       <Project>{a25a7100-1e34-468e-b701-9aad8e211cc1}</Project>
       <Name>Tinyblog.Contracts</Name>

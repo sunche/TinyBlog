@@ -41,7 +41,7 @@ namespace Tinyblog.DataLayer.Repository.Implementations
         {
             using (IDbConnection db = GetConnection())
             {
-                return db.Query<Comment>($"SELECT * FROM {TableName} WHERE articleId = '{articleId}'").ToList();
+                return db.Query<Comment>($"SELECT * FROM {TableName} WHERE articleId = (@articleId)", new { articleId }).ToList();
             }
         }
 
@@ -52,9 +52,11 @@ namespace Tinyblog.DataLayer.Repository.Implementations
         /// <returns>
         /// Insert script.
         /// </returns>
-        protected override string GetInsertScript(Comment entity)
+        protected override KeyValuePair<string, object> GetInsertScript(Comment entity)
         {
-            return $"INSERT INTO {TableName} (id,articleId,text,userName) VALUES('{entity.Id}','{entity.ArticleId}','{entity.Text}','{entity.UserName}')";
+            return new KeyValuePair<string, object>(
+                $"INSERT INTO {TableName} (id,articleId,text,author) VALUES((@Id),(@ArticleId),(@Text),(@Author))",
+                new { entity.Id, entity.ArticleId, entity.Text, entity.Author });
         }
     }
 }

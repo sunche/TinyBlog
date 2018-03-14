@@ -6,24 +6,44 @@
         xmlns:local="clr-namespace:Tinyblog.Client.Views"
         xmlns:viewModels="clr-namespace:Tinyblog.Client.ViewModels"
         mc:Ignorable="d"
-        Title="MainView" Height="300" Width="300">
+        Title="MainView" MinHeight="400" MinWidth="500" SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewModels:ArticleNavItemViewModel}">
             <Border BorderBrush="LightGray" BorderThickness="1">
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding Title}" />
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" MinWidth="5" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="{Binding Title}" Grid.Column="0" MaxWidth="200"
+                           ToolTip="{Binding Title}" />
+                    <Button Content="Delete" Command="{Binding DeleteArticleCommand}" CommandParameter="{Binding Id}"
+                            Grid.Column="2" />
+                </Grid>
             </Border>
         </DataTemplate>
     </Window.Resources>
     <Window.DataContext>
         <viewModels:MainViewModel />
     </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding ReloadCommand}" />
+    </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <local:ArticlesView Grid.Column="0" />
+        <local:ArticleNavView Grid.Column="0" />
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MaxHeight="300" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <local:ArticleView Grid.Row="0" DataContext="{Binding SelectedArticle}" />
+            <local:CommentsView Grid.Row="1" />
+        </Grid>
     </Grid>
 </Window>

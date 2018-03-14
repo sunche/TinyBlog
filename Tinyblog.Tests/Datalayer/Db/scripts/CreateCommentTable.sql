@@ -2,8 +2,8 @@ CREATE TABLE public."comment"
 (
   id uuid NOT NULL,
   articleId uuid NOT NULL,
-  text character varying,
-  userName character varying,
+  text character varying NOT NULL,
+  author character varying NOT NULL,
   CONSTRAINT comment_pkey PRIMARY KEY (id)
 )
 WITH (

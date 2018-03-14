@@ -8,6 +8,11 @@ namespace Tinyblog.DataLayer.Model
     public class Article : BaseEntity
     {
         /// <summary>
+        /// Gets or sets the author.
+        /// </summary>
+        public string Author { get; set; }
+
+        /// <summary>
         /// Gets or sets the text of the article.
         /// </summary>
         public string Text { get; set; }

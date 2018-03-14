@@ -10,6 +10,12 @@ namespace Tinyblog.Contracts.Data
     public class CommentInfo
     {
         /// <summary>
+        /// Gets or sets the user.
+        /// </summary>
+        [DataMember]
+        public string Author { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
         [DataMember]
@@ -20,11 +26,5 @@ namespace Tinyblog.Contracts.Data
         /// </summary>
         [DataMember]
         public string Text { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user.
-        /// </summary>
-        [DataMember]
-        public string UserName { get; set; }
     }
 }

@@ -12,9 +12,30 @@ namespace Tinyblog.Contracts.Services
     public interface ITinyblogService
     {
         /// <summary>
+        /// Deletes the article.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        [OperationContract]
+        void DeleteArticle(Guid id);
+
+        /// <summary>
+        /// Deletes the comment.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        [OperationContract]
+        void DeleteComment(Guid id);
+
+        /// <summary>
         /// Gets the article previews.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Article info.</returns>
+        [OperationContract]
+        ArticleInfo GetArticleInfo(Guid id);
+
+        /// <summary>
+        /// Gets the article previews.
+        /// </summary>
+        /// <returns>Article info.</returns>
         [OperationContract]
         List<ArticlePreviewInfo> GetArticlePreviews();
     }

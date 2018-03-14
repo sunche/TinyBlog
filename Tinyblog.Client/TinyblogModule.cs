@@ -3,6 +3,7 @@ using Autofac;
 using Tinyblog.Client.Services;
 using Tinyblog.Client.Services.Implementations;
 using Tinyblog.Client.ViewModels;
+using Tinyblog.Common.Log.Implementations;
 using Tinyblog.Contracts.Services;
 using Tinyblog.Proxies.Shared;
 
@@ -34,6 +35,7 @@ namespace Tinyblog.Client
             builder.Register(x => new TinyblogClient(EndpointName)).As<ITinyblogService>();
             builder.RegisterType<ArticleService>().As<IArticleService>();
             builder.RegisterType<MainViewModel>().AsSelf().UsingConstructor(typeof(IArticleService));
+            builder.RegisterType<SerilogLogger>().AsImplementedInterfaces();
         }
     }
 }

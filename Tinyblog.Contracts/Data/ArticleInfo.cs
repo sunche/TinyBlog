@@ -11,16 +11,28 @@ namespace Tinyblog.Contracts.Data
     public class ArticleInfo
     {
         /// <summary>
+        /// Gets or sets the author.
+        /// </summary>
+        [DataMember]
+        public string Author { get; set; }
+
+        /// <summary>
         /// Gets or sets the comments.
         /// </summary>
         [DataMember]
-        public IList<CommentInfo> Comments { get; set; }
+        public List<CommentInfo> Comments { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
         [DataMember]
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the text of the article.
+        /// </summary>
+        [DataMember]
+        public string Text { get; set; }
 
         /// <summary>
         /// Gets or sets the title of the article.

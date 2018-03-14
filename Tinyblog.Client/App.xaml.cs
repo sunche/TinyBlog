@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using Tinyblog.Client.ViewModels;
 using Tinyblog.Client.Views;
 
 namespace Tinyblog.Client
@@ -14,13 +10,28 @@ namespace Tinyblog.Client
     /// </summary>
     public partial class App : Application
     {
+        public static string CurrentUser { get; private set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            var window = new MainView();
-            var  clientBuilder = new ClientBuilder();
-            window.DataContext = clientBuilder.CreateApplication();
-            window.Show();
+
+            var mainView = new MainView();
+            MainWindow = mainView;
+
+            var clientBuilder = new ClientBuilder();
+            mainView.DataContext = clientBuilder.CreateApplication();
+            mainView.Show();
+
+            var loginWindow = new LoginView
+            {
+                ShowInTaskbar = false,
+                Owner = mainView
+            };
+
+            loginWindow.ShowDialog();
+
+            CurrentUser = ((LoginViewModel)loginWindow.DataContext).UserName;
         }
     }
 }

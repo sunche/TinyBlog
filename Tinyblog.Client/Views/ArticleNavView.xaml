@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Tinyblog.Client.Views.ArticlesView"
+﻿<UserControl x:Class="Tinyblog.Client.Views.ArticleNavView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,6 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel d:DataContext="{d:DesignInstance {x:Type viewModels:MainViewModel}}">
         <Label DockPanel.Dock="Top">Статьи:</Label>
-        <ListBox ItemsSource="{Binding ArticlesNav}" HorizontalContentAlignment="Stretch" />
+        <ListBox ItemsSource="{Binding ArticlesNav}" HorizontalContentAlignment="Stretch" SelectionMode="Single"
+                 SelectedItem="{Binding SelectedArticleNavItem}"/>
     </DockPanel>
 </UserControl>

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
+using Nelibur.Sword.DataStructures;
+using Nelibur.Sword.Extensions;
 using Npgsql;
 
 namespace Tinyblog.DataLayer.Repository.Implementations
@@ -39,7 +41,8 @@ namespace Tinyblog.DataLayer.Repository.Implementations
         {
             using (IDbConnection db = GetConnection())
             {
-                db.Execute(GetInsertScript(entity));
+                KeyValuePair<string, object> scriptDetails = GetInsertScript(entity);
+                db.Execute(scriptDetails.Key, scriptDetails.Value);
             }
         }
 
@@ -51,7 +54,7 @@ namespace Tinyblog.DataLayer.Repository.Implementations
         {
             using (IDbConnection db = GetConnection())
             {
-                db.Execute($"DELETE FROM {TableName} WHERE Id='{id}'");
+                db.Execute($"DELETE FROM {TableName} WHERE Id=(@id)", new { id });
             }
         }
 
@@ -62,11 +65,12 @@ namespace Tinyblog.DataLayer.Repository.Implementations
         /// <returns>
         /// Entity.
         /// </returns>
-        public T Get(Guid id)
+        public Option<T> Get(Guid id)
         {
             using (IDbConnection db = GetConnection())
             {
-                return db.QueryFirstOrDefault<T>($"SELECT * FROM {TableName} WHERE id = '{id}'");
+                return db.QueryFirstOrDefault<T>($"SELECT * FROM {TableName} WHERE id = (@id)",
+                    new { id }).ToOption();
             }
         }
 
@@ -96,6 +100,6 @@ namespace Tinyblog.DataLayer.Repository.Implementations
         /// </summary>
         /// <param name="entity">The entity.</param>
         /// <returns>Insert script.</returns>
-        protected abstract string GetInsertScript(T entity);
+        protected abstract KeyValuePair<string, object> GetInsertScript(T entity);
     }
 }

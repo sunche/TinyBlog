@@ -16,6 +16,8 @@ namespace Tinyblog.Client.ViewModels
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        protected string CurrentUser => App.CurrentUser;
+
         /// <summary>
         /// Called when [property changed].
         /// </summary>

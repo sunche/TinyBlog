@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Nelibur.Sword.DataStructures;
 using NUnit.Framework;
 using Tinyblog.DataLayer.Model;
 using Tinyblog.DataLayer.Repository.Implementations;
@@ -12,9 +13,9 @@ namespace Tinyblog.Tests.Datalayer.Db
     [Ignore("Requires a customized PostgreSql")]
     public class ArticleRepositoryPostgreTests
     {
-        private const string DbName = "TinyBlogArticleTest";
         private const string CreateArticleTableScriptName = "CreateArticleTable";
         private const string CreateDbScriptName = "CreateDb";
+        private const string DbName = "TinyBlogArticleTest";
         private const string DropDbScriptName = "DropDb";
         private const string PostgreConnectionString = "Server=localhost;Port=5432;User Id=postgres;Password=";
         private readonly string dbConnectionString = $"Server=localhost;Port=5432;User Id=postgres;Password=;Database={DbName}";
@@ -35,14 +36,22 @@ namespace Tinyblog.Tests.Datalayer.Db
             var articleId = Guid.NewGuid();
             var articleText = "Test Text";
             var articleTitle = "Test Title";
+            var articleAuthor = "Bob";
 
-            articleRepository.Add(new Article { Id = articleId, Text = articleText, Title = articleTitle });
-            var article = articleRepository.Get(articleId);
+            articleRepository.Add(new Article
+            {
+                Id = articleId,
+                Text = articleText,
+                Title = articleTitle,
+                Author = articleAuthor
+            });
+            var article = articleRepository.Get(articleId).Value;
 
             Assert.NotNull(article);
             Assert.AreEqual(articleId, article.Id);
             Assert.AreEqual(articleText, article.Text);
             Assert.AreEqual(articleTitle, article.Title);
+            Assert.AreEqual(articleAuthor, article.Author);
         }
 
         [Test]
@@ -53,9 +62,16 @@ namespace Tinyblog.Tests.Datalayer.Db
             var articleId = Guid.NewGuid();
             var articleText = "Test Text";
             var articleTitle = "Test Title";
+            var articleAuthor = "Bob";
 
-            articleRepository.Add(new Article { Id = articleId, Text = articleText, Title = articleTitle });
-            var article = articleRepository.Get(articleId);
+            articleRepository.Add(new Article
+            {
+                Id = articleId,
+                Text = articleText,
+                Title = articleTitle,
+                Author = articleAuthor
+            });
+            Option<Article> article = articleRepository.Get(articleId);
             Assert.NotNull(article);
             articleRepository.Delete(articleId);
             article = articleRepository.Get(articleId);
@@ -71,8 +87,15 @@ namespace Tinyblog.Tests.Datalayer.Db
             var articleId = Guid.NewGuid();
             var articleText = "Test Text";
             var articleTitle = "Test Title";
+            var articleAuthor = "Bob";
 
-            articleRepository.Add(new Article { Id = articleId, Text = articleText, Title = articleTitle });
+            articleRepository.Add(new Article
+            {
+                Id = articleId,
+                Text = articleText,
+                Title = articleTitle,
+                Author = articleAuthor
+            });
             IList<Article> articles = articleRepository.GetAll();
 
             Assert.NotNull(articles);
@@ -85,6 +108,16 @@ namespace Tinyblog.Tests.Datalayer.Db
         {
             var deleteDbScript = string.Format(ScriptHelper.GetScriptFromResource(DropDbScriptName), DbName);
             ScriptHelper.ExecuteScriptToPostgre(PostgreConnectionString, deleteDbScript);
+        }
+
+        [Test]
+        [Order(4)]
+        public void TryDeleteNotExistArticlesFromPostgreNotThrowTheError()
+        {
+            var articleRepository = new ArticleRepository(dbConnectionString);
+            var articleId = Guid.NewGuid();
+
+            Assert.DoesNotThrow(() => articleRepository.Delete(articleId));
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Windows.Controls;
 namespace Tinyblog.Client.Views
 {
     /// <summary>
-    /// Interaction logic for ArticlesView.xaml
+    /// Interaction logic for ArticleView.xaml
     /// </summary>
-    public partial class ArticlesView : UserControl
+    public partial class ArticleView : UserControl
     {
-        public ArticlesView()
+        public ArticleView()
         {
             InitializeComponent();
         }

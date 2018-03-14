@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Nelibur.Sword.Extensions;
+using Tinyblog.Client.Common;
 using Tinyblog.Client.Services;
-using Tinyblog.Contracts.Data;
 
 namespace Tinyblog.Client.ViewModels
 {
@@ -15,7 +15,13 @@ namespace Tinyblog.Client.ViewModels
     {
         private readonly IArticleService articleService;
         private ObservableCollection<ArticleNavItemViewModel> articlesNav;
+        private ObservableCollection<CommentViewModel> comments;
 
+        private ArticleViewModel selectedArticle;
+
+        private ArticleNavItemViewModel selectedArticleNavItem;
+
+        [Obsolete]
         public MainViewModel()
         {
         }
@@ -27,6 +33,7 @@ namespace Tinyblog.Client.ViewModels
         {
             articleService = service;
             InitData();
+            ReloadCommand = new Command(o => InitData());
         }
 
         /// <summary>
@@ -39,13 +46,119 @@ namespace Tinyblog.Client.ViewModels
             {
                 articlesNav = value;
                 OnPropertyChanged();
+                if (articlesNav.Any())
+                {
+                    SelectedArticleNavItem = articlesNav.First();
+                }
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the comments.
+        /// </summary>
+        public ObservableCollection<CommentViewModel> Comments
+        {
+            get => comments;
+            set
+            {
+                comments = value;
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the reload command.
+        /// </summary>
+        public Command ReloadCommand { get; }
+
+        /// <summary>
+        /// Gets or sets the selected article.
+        /// </summary>
+        public ArticleViewModel SelectedArticle
+        {
+            get => selectedArticle;
+            set
+            {
+                if (selectedArticle == value)
+                {
+                    return;
+                }
+
+                selectedArticle = value;
+
+                OnPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Selected Article Nav item.
+        /// </summary>
+        public ArticleNavItemViewModel SelectedArticleNavItem
+        {
+            get => selectedArticleNavItem;
+            set
+            {
+                if (selectedArticleNavItem == value)
+                {
+                    return;
+                }
+
+                selectedArticleNavItem = value;
+
+                SelectArticle(selectedArticleNavItem);
+                OnPropertyChanged();
+            }
+        }
+
+        private void DeleteArticle(object obj)
+        {
+            if (!Guid.TryParse(obj.ToString(), out Guid articleId))
+            {
+                return;
+            }
+
+            articleService.DeleteArticle(articleId);
+            InitData();
+        }
+
+        private void DeleteComment(object obj)
+        {
+            if (!Guid.TryParse(obj.ToString(), out Guid commentId))
+            {
+                return;
+            }
+
+            articleService.DeleteComment(commentId);
+            var comment = comments.FirstOrDefault(x => x.Id == commentId);
+            comments.Remove(comment);
         }
 
         private void InitData()
         {
-            IEnumerable<ArticlePreviewInfo> articles = articleService.GetArticlePreviews();
-            ArticlesNav = new ObservableCollection<ArticleNavItemViewModel>(articles.Select(x => new ArticleNavItemViewModel(x)));
+            ArticlesNav = new ObservableCollection<ArticleNavItemViewModel>
+            (
+                articleService.GetArticlePreviews()
+                    .Select(c => new ArticleNavItemViewModel(c, DeleteArticle))
+            );
+        }
+
+        private void SelectArticle(ArticleNavItemViewModel articleInfo)
+        {
+            if (articleInfo == null)
+            {
+                SelectedArticle = null;
+                Comments = null;
+                return;
+            }
+
+            articleService.GetArticleInfo(articleInfo.Id)
+                .ToOption()
+                .Do(x =>
+                {
+                    SelectedArticle = new ArticleViewModel(x);
+                    Comments = new ObservableCollection<CommentViewModel>(x.Comments
+                        .Select(c => new CommentViewModel(c, DeleteComment)));
+                });
         }
     }
 }

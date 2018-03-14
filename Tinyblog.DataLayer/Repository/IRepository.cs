@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Nelibur.Sword.DataStructures;
 
 namespace Tinyblog.DataLayer.Repository
 {
@@ -26,7 +27,7 @@ namespace Tinyblog.DataLayer.Repository
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>Entity.</returns>
-        T Get(Guid id);
+        Option<T> Get(Guid id);
 
         /// <summary>
         /// Gets all.

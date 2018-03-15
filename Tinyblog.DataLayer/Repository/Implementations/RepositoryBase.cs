@@ -6,6 +6,7 @@ using Dapper;
 using Nelibur.Sword.DataStructures;
 using Nelibur.Sword.Extensions;
 using Npgsql;
+using Tinyblog.DataLayer.Model;
 
 namespace Tinyblog.DataLayer.Repository.Implementations
 {
@@ -15,6 +16,7 @@ namespace Tinyblog.DataLayer.Repository.Implementations
     /// <typeparam name="T">Type of entity.</typeparam>
     /// <seealso cref="Tinyblog.DataLayer.Repository.IRepository{T}"/>
     public abstract class RepositoryBase<T> : IRepository<T>
+        where T : BaseEntity
     {
         private readonly string connectionString;
 
@@ -41,6 +43,7 @@ namespace Tinyblog.DataLayer.Repository.Implementations
         {
             using (IDbConnection db = GetConnection())
             {
+                entity.Id = Guid.NewGuid();
                 KeyValuePair<string, object> scriptDetails = GetInsertScript(entity);
                 db.Execute(scriptDetails.Key, scriptDetails.Value);
             }

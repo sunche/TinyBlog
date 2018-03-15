@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Nelibur.Sword.Extensions;
 using Tinyblog.Contracts.Data;
 using Tinyblog.DataLayer.Model;
@@ -26,6 +25,23 @@ namespace Tinyblog.Services.Processors.Implementations
         {
             this.articleRepository = articleRepository;
             this.commentRepository = commentRepository;
+        }
+
+        /// <summary>
+        /// Adds the article.
+        /// </summary>
+        /// <param name="articleInfo">The article information.</param>
+        /// <returns>
+        /// Added article.
+        /// </returns>
+        public void AddArticle(ArticleInfo articleInfo)
+        {
+            articleRepository.Add(Convert(articleInfo));
+        }
+
+        public void AddComment(CommentInfo commentInfo)
+        {
+            commentRepository.Add(Convert(commentInfo));
         }
 
         /// <summary>
@@ -63,6 +79,28 @@ namespace Tinyblog.Services.Processors.Implementations
                 .ConvertAll(Convert);
         }
 
+        private static CommentInfo Convert(Comment comment)
+        {
+            return new CommentInfo
+            {
+                Id = comment.Id,
+                Text = comment.Text,
+                Author = comment.Author,
+                ArticleId = comment.ArticleId
+            };
+        }
+
+        private static Comment Convert(CommentInfo commentInfo)
+        {
+            return new Comment()
+            {
+                Id = commentInfo.Id,
+                Text = commentInfo.Text,
+                Author = commentInfo.Author,
+                ArticleId = commentInfo.ArticleId
+            };
+        }
+
         private ArticlePreviewInfo Convert(Article article)
         {
             return new ArticlePreviewInfo
@@ -87,13 +125,18 @@ namespace Tinyblog.Services.Processors.Implementations
 
         private List<CommentInfo> Convert(List<Comment> comments)
         {
-            return comments.Select(c =>
-                new CommentInfo
-                {
-                    Id = c.Id,
-                    Text = c.Text,
-                    Author = c.Author
-                }).ToList();
+            return comments.ConvertAll(Convert);
+        }
+
+        private Article Convert(ArticleInfo articleInfo)
+        {
+            return new Article()
+            {
+                Id = articleInfo.Id,
+                Title = articleInfo.Title,
+                Text = articleInfo.Text,
+                Author = articleInfo.Author
+            };
         }
     }
 }

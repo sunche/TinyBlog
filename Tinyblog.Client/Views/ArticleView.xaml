@@ -5,8 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Tinyblog.Client.Views"
              xmlns:viewModels="clr-namespace:Tinyblog.Client.ViewModels"
+             xmlns:converters="clr-namespace:Tinyblog.Client.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid d:DataContext="{d:DesignInstance {x:Type viewModels:ArticleViewModel}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -16,13 +22,23 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="*" MinHeight="200"/>
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Content="{Binding Title, Mode=OneWay}" />
+        <TextBox Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"
+                 Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
+                 IsReadOnly="{Binding IsEditMode, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"
+                 />
         <Separator Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" />
-        <TextBox IsReadOnly="True" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Text="{Binding Text, Mode=OneWay}"
-                 TextWrapping="Wrap" AcceptsReturn="True" />
-        <Label Grid.Column="2" Grid.Row="3" Content="{Binding Author, Mode=OneWay}" />
+        <TextBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2"
+                 IsReadOnly="{Binding IsEditMode, Mode=OneWay, Converter={StaticResource InverseBooleanConverter}}"
+                 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True" />
+        <Label Grid.Column="2" Grid.Row="3" Content="{Binding Author, Mode=OneWay}" Visibility="{Binding IsEditMode, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+        <DockPanel Grid.Column="2" Grid.Row="3" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Button Content="Apply" IsDefault="True" Margin="0, 3, 0, 0" Command="{Binding ApplyEditCommand}"/>
+            <Button Content="Cancel" IsCancel="True"  Margin="5, 3, 0, 0" Command="{Binding CancelEditCommand}"/>
+        </DockPanel>
     </Grid>
 </UserControl>

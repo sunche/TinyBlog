@@ -8,8 +8,7 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel d:DataContext="{d:DesignInstance {x:Type viewModels:MainViewModel}}">
-        <Label DockPanel.Dock="Top">Статьи:</Label>
         <ListBox ItemsSource="{Binding ArticlesNav}" HorizontalContentAlignment="Stretch" SelectionMode="Single"
-                 SelectedItem="{Binding SelectedArticleNavItem}"/>
+                 SelectedItem="{Binding SelectedArticleNavItem}" />
     </DockPanel>
 </UserControl>

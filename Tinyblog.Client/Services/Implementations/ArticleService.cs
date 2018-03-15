@@ -27,6 +27,41 @@ namespace Tinyblog.Client.Services.Implementations
         }
 
         /// <summary>
+        /// Adds the article information.
+        /// </summary>
+        /// <param name="articleInfo"></param>
+        /// <returns>
+        /// Added Article.
+        /// </returns>
+        public void AddArticle(ArticleInfo articleInfo)
+        {
+            try
+            {
+                logger.Debug("Try to send request to add article.");
+                proxy.AddArticle(articleInfo);
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Error while sending request to add article.");
+                throw;
+            }
+        }
+
+        public void AddComment(CommentInfo commentInfo)
+        {
+            try
+            {
+                logger.Debug("Try to send request to add comment.");
+                proxy.AddComment(commentInfo);
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Error while sending request to add comment.");
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Deletes the article.
         /// </summary>
         /// <param name="id">The identifier.</param>

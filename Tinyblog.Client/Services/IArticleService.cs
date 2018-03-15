@@ -10,6 +10,20 @@ namespace Tinyblog.Client.Services
     public interface IArticleService
     {
         /// <summary>
+        /// Adds the article information.
+        /// </summary>
+        /// <param name="articleInfo"></param>
+        /// <returns>Added Article.</returns>
+        void AddArticle(ArticleInfo articleInfo);
+
+        /// <summary>
+        /// Adds the comment information.
+        /// </summary>
+        /// <param name="commentInfo">The comment information.</param>
+        /// <returns>Comment info.</returns>
+        void AddComment(CommentInfo commentInfo);
+
+        /// <summary>
         /// Deletes the article.
         /// </summary>
         /// <param name="id">The identifier.</param>

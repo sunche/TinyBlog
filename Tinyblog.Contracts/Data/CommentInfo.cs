@@ -10,6 +10,12 @@ namespace Tinyblog.Contracts.Data
     public class CommentInfo
     {
         /// <summary>
+        /// Gets or sets the article identifier.
+        /// </summary>
+        [DataMember]
+        public Guid ArticleId { get; set; }
+
+        /// <summary>
         /// Gets or sets the user.
         /// </summary>
         [DataMember]

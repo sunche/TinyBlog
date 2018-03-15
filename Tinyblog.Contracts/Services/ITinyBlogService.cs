@@ -12,6 +12,22 @@ namespace Tinyblog.Contracts.Services
     public interface ITinyblogService
     {
         /// <summary>
+        /// Adds the article information.
+        /// </summary>
+        /// <param name="articleInfo">The article information.</param>
+        /// <returns>Article Info.</returns>
+        [OperationContract]
+        void AddArticle(ArticleInfo articleInfo);
+
+        /// <summary>
+        /// Adds the comment information.
+        /// </summary>
+        /// <param name="commentInfo">The comment information.</param>
+        /// <returns>Comment info.</returns>
+        [OperationContract]
+        void AddComment(CommentInfo commentInfo);
+
+        /// <summary>
         /// Deletes the article.
         /// </summary>
         /// <param name="id">The identifier.</param>

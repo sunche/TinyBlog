@@ -5,20 +5,46 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Tinyblog.Client.Views"
              xmlns:viewModels="clr-namespace:Tinyblog.Client.ViewModels"
+             xmlns:converters="clr-namespace:Tinyblog.Client.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid d:DataContext="{d:DesignInstance {x:Type viewModels:MainViewModel}}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Content="Comments" />
-        <ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" SelectionMode="Single"
-                 ItemsSource="{Binding Comments}" HorizontalContentAlignment="Stretch">
+        <Button Content="Add comment" Grid.Column="2" Grid.Row="0" Margin="3" Command="{Binding AddCommentCommand}"
+                Visibility="{Binding IsEditMode, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+              Visibility="{Binding IsEditComment, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" MaxHeight="200" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" Text="{Binding EditableCommentText, UpdateSourceTrigger=PropertyChanged}"
+                     MinLines="3" TextWrapping="Wrap" />
+            <DockPanel Grid.Row="1" LastChildFill="False">
+                <Button Content="Cancel" IsCancel="True" Margin="5, 3, 0, 0"
+                        Command="{Binding CancelEditCommentCommand}" DockPanel.Dock="Right" />
+                <Button Content="Apply" IsDefault="True" Margin="0, 3, 0, 0" Command="{Binding ApplyAddCommentCommand}"
+                        DockPanel.Dock="Right" />
+            </DockPanel>
+        </Grid>
+        <ListBox Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" SelectionMode="Single"
+                 ItemsSource="{Binding Comments}" HorizontalContentAlignment="Stretch"
+                 IsEnabled="{Binding IsEditComment, Converter={StaticResource InverseBooleanConverter}}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type viewModels:CommentViewModel}">
                     <Border BorderBrush="LightGray" BorderThickness="1">

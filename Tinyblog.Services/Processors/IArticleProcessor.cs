@@ -10,6 +10,20 @@ namespace Tinyblog.Services.Processors
     public interface IArticleProcessor
     {
         /// <summary>
+        /// Adds the article.
+        /// </summary>
+        /// <param name="articleInfo">The article information.</param>
+        /// <returns>Added article.</returns>
+        void AddArticle(ArticleInfo articleInfo);
+
+        /// <summary>
+        /// Adds the comment.
+        /// </summary>
+        /// <param name="commentInfo">The comment information.</param>
+        /// <returns>Comment info.</returns>
+        void AddComment(CommentInfo commentInfo);
+
+        /// <summary>
         /// Deletes the article.
         /// </summary>
         /// <param name="id">The identifier.</param>

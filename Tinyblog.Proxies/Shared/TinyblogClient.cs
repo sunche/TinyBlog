@@ -34,6 +34,23 @@ namespace Tinyblog.Proxies.Shared
         }
 
         /// <summary>
+        /// Adds the article information.
+        /// </summary>
+        /// <param name="articleInfo">The article information.</param>
+        /// <returns>
+        /// Article Info.
+        /// </returns>
+        public void AddArticle(ArticleInfo articleInfo)
+        {
+            Channel.AddArticle(articleInfo);
+        }
+
+        public void AddComment(CommentInfo commentInfo)
+        {
+            Channel.AddComment(commentInfo);
+        }
+
+        /// <summary>
         /// Deletes the article.
         /// </summary>
         /// <param name="id">The identifier.</param>

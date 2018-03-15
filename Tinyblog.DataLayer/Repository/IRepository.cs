@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Nelibur.Sword.DataStructures;
+using Tinyblog.DataLayer.Model;
 
 namespace Tinyblog.DataLayer.Repository
 {
@@ -9,6 +10,7 @@ namespace Tinyblog.DataLayer.Repository
     /// </summary>
     /// <typeparam name="T">Entity.</typeparam>
     public interface IRepository<T>
+        where T : BaseEntity
     {
         /// <summary>
         /// Adds the specified entity.

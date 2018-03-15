@@ -29,6 +29,50 @@ namespace Tinyblog.Services
         }
 
         /// <summary>
+        /// Adds the article information.
+        /// </summary>
+        /// <param name="articleInfo">The article information.</param>
+        /// <returns>
+        /// Article Info.
+        /// </returns>
+        /// <exception cref="FaultException"></exception>
+        public void AddArticle(ArticleInfo articleInfo)
+        {
+            try
+            {
+                logger.Debug("Try to add new article.");
+                articleProcessor.AddArticle(articleInfo);
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Error while adding new article.");
+                throw new FaultException(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Adds the comment information.
+        /// </summary>
+        /// <param name="commentInfo">The comment information.</param>
+        /// <returns>
+        /// Comment info.
+        /// </returns>
+        /// <exception cref="FaultException"></exception>
+        public void AddComment(CommentInfo commentInfo)
+        {
+            try
+            {
+                logger.Debug("Try to add new comment.");
+                articleProcessor.AddComment(commentInfo);
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Error while adding new comment.");
+                throw new FaultException(e.Message);
+            }
+        }
+
+        /// <summary>
         /// Deletes the article.
         /// </summary>
         /// <param name="id">The identifier.</param>

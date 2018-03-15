@@ -4,6 +4,7 @@ using System.Linq;
 using Nelibur.Sword.Extensions;
 using Tinyblog.Client.Common;
 using Tinyblog.Client.Services;
+using Tinyblog.Contracts.Data;
 
 namespace Tinyblog.Client.ViewModels
 {
@@ -17,9 +18,12 @@ namespace Tinyblog.Client.ViewModels
         private ObservableCollection<ArticleNavItemViewModel> articlesNav;
         private ObservableCollection<CommentViewModel> comments;
 
-        private ArticleViewModel selectedArticle;
+        private CommentInfo editableComment;
+        private bool isEditMode;
 
         private ArticleNavItemViewModel selectedArticleNavItem;
+
+        private ArticleViewModel selectedArticleViewModel;
 
         [Obsolete]
         public MainViewModel()
@@ -34,7 +38,20 @@ namespace Tinyblog.Client.ViewModels
             articleService = service;
             InitData();
             ReloadCommand = new Command(o => InitData());
+            AddArticleCommand = new Command(o => ShowAddArticleView());
+            AddCommentCommand = new Command(o => ShowAddCommentView());
+            CancelEditCommentCommand = new Command(o => CancelAnyEdit());
+            ApplyAddCommentCommand = new Command(ValidateEditableComment, o => ApplyAddComment());
         }
+
+        /// <summary>
+        /// Gets the add article.
+        /// </summary>
+        public Command AddArticleCommand { get; }
+
+        public Command AddCommentCommand { get; }
+
+        public Command ApplyAddCommentCommand { get; }
 
         /// <summary>
         /// Gets or sets the articles nav.
@@ -53,6 +70,8 @@ namespace Tinyblog.Client.ViewModels
             }
         }
 
+        public Command CancelEditCommentCommand { get; }
+
         /// <summary>
         /// Gets or sets the comments.
         /// </summary>
@@ -62,6 +81,28 @@ namespace Tinyblog.Client.ViewModels
             set
             {
                 comments = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string EditableCommentText
+        {
+            get => editableComment?.Text;
+            set
+            {
+                editableComment.Text = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsEditComment => editableComment != null;
+
+        public bool IsEditMode
+        {
+            get => isEditMode;
+            set
+            {
+                isEditMode = value;
                 OnPropertyChanged();
             }
         }
@@ -76,15 +117,15 @@ namespace Tinyblog.Client.ViewModels
         /// </summary>
         public ArticleViewModel SelectedArticle
         {
-            get => selectedArticle;
+            get => selectedArticleViewModel;
             set
             {
-                if (selectedArticle == value)
+                if (selectedArticleViewModel == value)
                 {
                     return;
                 }
 
-                selectedArticle = value;
+                selectedArticleViewModel = value;
 
                 OnPropertyChanged();
             }
@@ -110,6 +151,33 @@ namespace Tinyblog.Client.ViewModels
             }
         }
 
+        private void AddNewArticle(ArticleInfo article)
+        {
+            articleService.AddArticle(article);
+            CancelAnyEdit();
+            InitData();
+        }
+
+        private void ApplyAddComment()
+        {
+            articleService.AddComment(editableComment);
+            CancelAnyEdit();
+            SelectArticle(SelectedArticleNavItem);
+        }
+
+        private bool ValidateEditableComment(object obj)
+        {
+            return !string.IsNullOrEmpty(EditableCommentText);
+        }
+
+        private void CancelAnyEdit()
+        {
+            IsEditMode = false;
+            editableComment = null;
+            OnPropertyChanged(nameof(EditableCommentText));
+            OnPropertyChanged(nameof(IsEditComment));
+        }
+
         private void DeleteArticle(object obj)
         {
             if (!Guid.TryParse(obj.ToString(), out Guid articleId))
@@ -133,12 +201,22 @@ namespace Tinyblog.Client.ViewModels
             comments.Remove(comment);
         }
 
+        private ArticleNavItemViewModel GetArtcilePreviewViewModel(ArticlePreviewInfo c)
+        {
+            return new ArticleNavItemViewModel(c, DeleteArticle);
+        }
+
+        private CommentViewModel GetCommentViewModel(CommentInfo c)
+        {
+            return new CommentViewModel(c, DeleteComment);
+        }
+
         private void InitData()
         {
             ArticlesNav = new ObservableCollection<ArticleNavItemViewModel>
             (
                 articleService.GetArticlePreviews()
-                    .Select(c => new ArticleNavItemViewModel(c, DeleteArticle))
+                    .Select(c => GetArtcilePreviewViewModel(c))
             );
         }
 
@@ -157,8 +235,29 @@ namespace Tinyblog.Client.ViewModels
                 {
                     SelectedArticle = new ArticleViewModel(x);
                     Comments = new ObservableCollection<CommentViewModel>(x.Comments
-                        .Select(c => new CommentViewModel(c, DeleteComment)));
+                        .Select(c => GetCommentViewModel(c)));
                 });
+        }
+
+        private void ShowAddArticleView()
+        {
+            var selectedArticleNav = SelectedArticleNavItem;
+            SelectedArticleNavItem = null;
+            SelectedArticle = new ArticleViewModel(AddNewArticle,
+                () =>
+                {
+                    CancelAnyEdit();
+                    SelectedArticleNavItem = selectedArticleNav;
+                });
+            IsEditMode = true;
+        }
+
+        private void ShowAddCommentView()
+        {
+            editableComment = new CommentInfo { Author = CurrentUser, ArticleId = SelectedArticleNavItem.Id };
+            IsEditMode = true;
+            OnPropertyChanged(nameof(EditableCommentText));
+            OnPropertyChanged(nameof(IsEditComment));
         }
     }
 }

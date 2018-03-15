@@ -67,6 +67,8 @@
     </ApplicationDefinition>
     <Compile Include="ClientBuilder.cs" />
     <Compile Include="Common\Command.cs" />
+    <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\InverseBooleanToVisibilityConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Services\IArticleService.cs" />
     <Compile Include="Services\Implementations\ArticleService.cs" />

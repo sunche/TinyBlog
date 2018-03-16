@@ -24,10 +24,14 @@ namespace Tinyblog.DataLayer.Repository.Implementations.NHibernate
             Session.Save(entity);
         }
 
-        //TODO: проверить.
         public void Delete(Guid id)
         {
             Session.Query<T>().Where(x => x.Id == id).Delete();
+        }
+
+        public void Delete(Guid[] ids)
+        {
+            Session.Query<T>().Where(x => ids.Contains(x.Id)).Delete();
         }
 
         public Option<T> Get(Guid id)

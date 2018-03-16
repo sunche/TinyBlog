@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Nelibur.Sword.Extensions;
 using Tinyblog.Contracts.Data;
 using Tinyblog.DataLayer.Repository;
@@ -51,8 +52,9 @@ namespace Tinyblog.Services.Processors.Implementations
         public void DeleteArticle(Guid id)
         {
             articleRepository.Delete(id);
-            commentRepository.GetForArticle(id)
-                .ForEach(x => commentRepository.Delete(x.Id));
+            Guid[] idsToDelete = commentRepository.GetForArticle(id)
+                .Select(x => x.Id).ToArray();
+            commentRepository.Delete(idsToDelete);
         }
 
         public void DeleteComment(Guid id)

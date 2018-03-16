@@ -61,6 +61,14 @@ namespace Tinyblog.DataLayer.Repository.Implementations
             }
         }
 
+        public void Delete(Guid[] ids)
+        {
+            using (IDbConnection db = GetConnection())
+            {
+                db.Execute($"DELETE FROM {TableName} WHERE Id=(@id)", new[] { ids });
+            }
+        }
+
         /// <summary>
         /// Gets the specified identifier.
         /// </summary>

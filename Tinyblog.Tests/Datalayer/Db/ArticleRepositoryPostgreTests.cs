@@ -33,22 +33,22 @@ namespace Tinyblog.Tests.Datalayer.Db
         public void CanAddArticleToPostgre()
         {
             var articleRepository = new ArticleRepository(dbConnectionString);
-            var articleId = Guid.NewGuid();
             var articleText = "Test Text";
             var articleTitle = "Test Title";
             var articleAuthor = "Bob";
 
             articleRepository.Add(new Article
             {
-                Id = articleId,
                 Text = articleText,
                 Title = articleTitle,
                 Author = articleAuthor
             });
-            var article = articleRepository.Get(articleId).Value;
 
-            Assert.NotNull(article);
-            Assert.AreEqual(articleId, article.Id);
+            List<Article> articles = articleRepository.GetAll();
+            Assert.IsNotEmpty(articles);
+
+            var article = articleRepository.Get(articles.First().Id).Value;
+
             Assert.AreEqual(articleText, article.Text);
             Assert.AreEqual(articleTitle, article.Title);
             Assert.AreEqual(articleAuthor, article.Author);
@@ -59,22 +59,20 @@ namespace Tinyblog.Tests.Datalayer.Db
         public void CanDeleteArticlesFromPostgre()
         {
             var articleRepository = new ArticleRepository(dbConnectionString);
-            var articleId = Guid.NewGuid();
             var articleText = "Test Text";
             var articleTitle = "Test Title";
             var articleAuthor = "Bob";
 
             articleRepository.Add(new Article
             {
-                Id = articleId,
                 Text = articleText,
                 Title = articleTitle,
                 Author = articleAuthor
             });
-            Option<Article> article = articleRepository.Get(articleId);
+            Article article = articleRepository.GetAll().LastOrDefault();
             Assert.NotNull(article);
-            articleRepository.Delete(articleId);
-            article = articleRepository.Get(articleId);
+            articleRepository.Delete(article.Id);
+            article = articleRepository.Get(article.Id).Value;
 
             Assert.IsNull(article);
         }
@@ -84,14 +82,12 @@ namespace Tinyblog.Tests.Datalayer.Db
         public void CanGetAllArticlesFromPostgre()
         {
             var articleRepository = new ArticleRepository(dbConnectionString);
-            var articleId = Guid.NewGuid();
             var articleText = "Test Text";
-            var articleTitle = "Test Title";
+            var articleTitle = Guid.NewGuid().ToString();
             var articleAuthor = "Bob";
 
             articleRepository.Add(new Article
             {
-                Id = articleId,
                 Text = articleText,
                 Title = articleTitle,
                 Author = articleAuthor
@@ -100,7 +96,7 @@ namespace Tinyblog.Tests.Datalayer.Db
 
             Assert.NotNull(articles);
             Assert.AreEqual(2, articles.Count);
-            Assert.IsTrue(articles.Any(x => x.Id == articleId));
+            Assert.IsTrue(articles.Any(x => x.Title == articleTitle));
         }
 
         [OneTimeTearDown]

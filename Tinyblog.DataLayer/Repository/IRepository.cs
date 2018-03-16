@@ -24,6 +24,8 @@ namespace Tinyblog.DataLayer.Repository
         /// <param name="id">The identifier.</param>
         void Delete(Guid id);
 
+        void Delete(List<Guid> ids);
+
         /// <summary>
         /// Gets the specified identifier.
         /// </summary>

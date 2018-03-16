@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Nelibur.Sword.Extensions;
 using Tinyblog.Contracts.Data;
 using Tinyblog.DataLayer.Repository;
@@ -50,9 +51,10 @@ namespace Tinyblog.Services.Processors.Implementations
         /// <exception cref="NotImplementedException"></exception>
         public void DeleteArticle(Guid id)
         {
+            List<Guid> idsToDelete = commentRepository.GetForArticle(id)
+                .Select(x => x.Id).ToList();
+            commentRepository.Delete(idsToDelete);
             articleRepository.Delete(id);
-            commentRepository.GetForArticle(id)
-                .ForEach(x => commentRepository.Delete(x.Id));
         }
 
         public void DeleteComment(Guid id)

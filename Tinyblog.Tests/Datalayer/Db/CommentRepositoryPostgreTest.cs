@@ -29,69 +29,106 @@ namespace Tinyblog.Tests.Datalayer.Db
         }
 
         [Test]
-        [Order(4)]
+        [Order(1)]
         public void CanAddCommentToPostgre()
         {
             var commentRepository = new CommentRepository(dbConnectionString);
-            var commentId = Guid.NewGuid();
             var articleId = Guid.NewGuid();
             var commentText = "Test Text";
             var commentUserName = "Test user";
 
             commentRepository.Add(new Comment
             {
-                Id = commentId,
                 Text = commentText,
                 Author = commentUserName,
                 ArticleId = articleId
             });
-            var comment = commentRepository.Get(commentId).Value;
+            List<Comment> comments = commentRepository.GetAll();
+            Assert.IsNotEmpty(comments);
+
+            var comment = comments.First();
 
             Assert.NotNull(comment);
-            Assert.AreEqual(commentId, comment.Id);
             Assert.AreEqual(commentText, comment.Text);
             Assert.AreEqual(commentUserName, comment.Author);
             Assert.AreEqual(articleId, comment.ArticleId);
         }
 
         [Test]
-        [Order(6)]
+        [Order(3)]
         public void CanDeleteCommentFromPostgre()
         {
             var commentRepository = new CommentRepository(dbConnectionString);
-            var commentId = Guid.NewGuid();
             var articleId = Guid.NewGuid();
             var commentText = "Test Text";
             var commentUserName = "Test user";
 
             commentRepository.Add(new Comment
             {
-                Id = commentId,
                 Text = commentText,
                 Author = commentUserName,
                 ArticleId = articleId
             });
-            Option<Comment> comment = commentRepository.Get(commentId);
+            List<Comment> comments = commentRepository.GetAll();
+            Assert.IsNotEmpty(comments);
+            var comment = comments.Last();
             Assert.NotNull(comment);
-            commentRepository.Delete(commentId);
-            comment = commentRepository.Get(commentId);
+            commentRepository.Delete(comment.Id);
+            comment = commentRepository.Get(comment.Id).Value;
+
+            Assert.IsNull(comment);
+        }
+
+
+        [Test]
+        [Order(4)]
+        public void CanDeleteCommentsFromPostgre()
+        {
+            var commentRepository = new CommentRepository(dbConnectionString);
+            var articleId = Guid.NewGuid();
+            var commentText = "Test Text";
+            var commentUserName = "Test user";
+
+            var secondcommentText = "Second Test Text";
+            var secondcommentUserName = "Second Test user";
+
+            commentRepository.Add(new Comment
+            {
+                Text = commentText,
+                Author = commentUserName,
+                ArticleId = articleId
+            });
+
+            commentRepository.Add(new Comment
+            {
+                Text = secondcommentText,
+                Author = secondcommentUserName,
+                ArticleId = articleId
+            });
+
+            List<Comment> comments = commentRepository.GetAll();
+            Assert.IsNotEmpty(comments);
+
+            comments.Reverse();
+            List<Guid> commentsToDelete = comments.Take(2).Select(x=>x.Id).ToList();
+
+            commentRepository.Delete(commentsToDelete);
+            Comment comment = commentRepository.Get(commentsToDelete.First()).Value;
 
             Assert.IsNull(comment);
         }
 
         [Test]
-        [Order(5)]
+        [Order(2)]
         public void CanGetAllCommentsFromPostgre()
         {
             var commentRepository = new CommentRepository(dbConnectionString);
-            var commentId = Guid.NewGuid();
             var articleId = Guid.NewGuid();
-            var commentText = "Test Text";
+            var commentText = Guid.NewGuid().ToString();
             var commentUserName = "Test user";
 
             commentRepository.Add(new Comment
             {
-                Id = commentId,
                 Text = commentText,
                 Author = commentUserName,
                 ArticleId = articleId
@@ -100,7 +137,7 @@ namespace Tinyblog.Tests.Datalayer.Db
 
             Assert.NotNull(comments);
             Assert.AreEqual(2, comments.Count);
-            Assert.IsTrue(comments.Any(x => x.Id == commentId));
+            Assert.IsTrue(comments.Any(x => x.Text == commentText));
         }
 
         [OneTimeTearDown]

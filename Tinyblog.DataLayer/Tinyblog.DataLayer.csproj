@@ -30,22 +30,39 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr3.Runtime.3.5.1\lib\net40-client\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.2\lib\net461\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Nelibur.Sword, Version=3.0.3.225, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Nelibur.Sword.3.1.8\lib\net45\Nelibur.Sword.dll</HintPath>
     </Reference>
+    <Reference Include="NHibernate, Version=5.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.5.0.3\lib\net461\NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Npgsql, Version=3.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.3.2.7\lib\net451\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.1.2\lib\net45\Remotion.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Linq.EagerFetching, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.EagerFetching.2.1.0\lib\net45\Remotion.Linq.EagerFetching.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +71,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\NHibernateConfigurator.cs" />
+    <Compile Include="Core\Implementations\NHibernateUnitOfWork.cs" />
+    <Compile Include="Core\Implementations\NHibernateUnitOfWorkFactory.cs" />
+    <Compile Include="Core\IUnitOfWork.cs" />
+    <Compile Include="Core\IUnitOfWorkFactory.cs" />
+    <Compile Include="Mapping\ArticleMapping.cs" />
+    <Compile Include="Mapping\CommentMapping.cs" />
     <Compile Include="Model\Article.cs" />
     <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="Model\Comment.cs" />
@@ -62,11 +86,17 @@
     <Compile Include="Repository\ICommentRepository.cs" />
     <Compile Include="Repository\Implementations\ArticleRepository.cs" />
     <Compile Include="Repository\Implementations\CommentRepository.cs" />
+    <Compile Include="Repository\Implementations\NHibernate\NhArticleRepository.cs" />
+    <Compile Include="Repository\Implementations\NHibernate\NhCommentRepository.cs" />
+    <Compile Include="Repository\Implementations\NHibernate\NhRepositoryBase.cs" />
     <Compile Include="Repository\Implementations\RepositoryBase.cs" />
     <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\IRepositoryResolver.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

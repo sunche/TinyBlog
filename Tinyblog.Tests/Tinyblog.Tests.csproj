@@ -64,6 +64,7 @@
     <Compile Include="Datalayer\Db\ArticleRepositoryPostgreTests.cs" />
     <Compile Include="Helpers\ScriptHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Processors\ArticleProcessorUoWTests.cs" />
     <Compile Include="Services\Processors\ArticleProcessorTests.cs" />
   </ItemGroup>
   <ItemGroup>

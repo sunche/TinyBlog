@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Nelibur.Sword.Extensions;
 using Tinyblog.Contracts.Data;
-using Tinyblog.DataLayer.Model;
 using Tinyblog.DataLayer.Repository;
 
 namespace Tinyblog.Services.Processors.Implementations
@@ -36,12 +35,12 @@ namespace Tinyblog.Services.Processors.Implementations
         /// </returns>
         public void AddArticle(ArticleInfo articleInfo)
         {
-            articleRepository.Add(Convert(articleInfo));
+            articleRepository.Add(ArticleMapper.Convert(articleInfo));
         }
 
         public void AddComment(CommentInfo commentInfo)
         {
-            commentRepository.Add(Convert(commentInfo));
+            commentRepository.Add(ArticleMapper.Convert(commentInfo));
         }
 
         /// <summary>
@@ -64,7 +63,7 @@ namespace Tinyblog.Services.Processors.Implementations
         public ArticleInfo GetArticleInfo(Guid id)
         {
             return articleRepository.Get(id)
-                .Map(x => Convert(x, commentRepository.GetForArticle(id))).Value;
+                .Map(x => ArticleMapper.Convert(x, commentRepository.GetForArticle(id))).Value;
         }
 
         /// <summary>
@@ -76,67 +75,7 @@ namespace Tinyblog.Services.Processors.Implementations
         public List<ArticlePreviewInfo> GetArticlePreviews()
         {
             return articleRepository.GetAll()
-                .ConvertAll(Convert);
-        }
-
-        private static CommentInfo Convert(Comment comment)
-        {
-            return new CommentInfo
-            {
-                Id = comment.Id,
-                Text = comment.Text,
-                Author = comment.Author,
-                ArticleId = comment.ArticleId
-            };
-        }
-
-        private static Comment Convert(CommentInfo commentInfo)
-        {
-            return new Comment()
-            {
-                Id = commentInfo.Id,
-                Text = commentInfo.Text,
-                Author = commentInfo.Author,
-                ArticleId = commentInfo.ArticleId
-            };
-        }
-
-        private ArticlePreviewInfo Convert(Article article)
-        {
-            return new ArticlePreviewInfo
-            {
-                Id = article.Id,
-                Title = article.Title,
-                Author = article.Author
-            };
-        }
-
-        private ArticleInfo Convert(Article article, List<Comment> comments)
-        {
-            return new ArticleInfo
-            {
-                Id = article.Id,
-                Title = article.Title,
-                Text = article.Text,
-                Author = article.Author,
-                Comments = Convert(comments)
-            };
-        }
-
-        private List<CommentInfo> Convert(List<Comment> comments)
-        {
-            return comments.ConvertAll(Convert);
-        }
-
-        private Article Convert(ArticleInfo articleInfo)
-        {
-            return new Article()
-            {
-                Id = articleInfo.Id,
-                Title = articleInfo.Title,
-                Text = articleInfo.Text,
-                Author = articleInfo.Author
-            };
+                .ConvertAll(ArticleMapper.Convert);
         }
     }
 }

@@ -10,16 +10,16 @@ namespace Tinyblog.DataLayer.Model
         /// <summary>
         /// Gets or sets the author.
         /// </summary>
-        public string Author { get; set; }
+        public virtual string Author { get; set; }
 
         /// <summary>
         /// Gets or sets the text of the article.
         /// </summary>
-        public string Text { get; set; }
+        public virtual string Text { get; set; }
 
         /// <summary>
         /// Gets or sets the title of the article.
         /// </summary>
-        public string Title { get; set; }
+        public virtual string Title { get; set; }
     }
 }

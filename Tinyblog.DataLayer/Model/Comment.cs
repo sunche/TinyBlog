@@ -10,16 +10,16 @@ namespace Tinyblog.DataLayer.Model
         /// <summary>
         /// Gets or sets the article identifier.
         /// </summary>
-        public Guid ArticleId { get; set; }
+        public virtual Guid ArticleId { get; set; }
 
         /// <summary>
         /// Gets or sets the author.
         /// </summary>
-        public string Author { get; set; }
+        public virtual string Author { get; set; }
 
         /// <summary>
         /// Gets or sets the text.
         /// </summary>
-        public string Text { get; set; }
+        public virtual string Text { get; set; }
     }
 }

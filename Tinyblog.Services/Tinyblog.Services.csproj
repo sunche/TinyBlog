@@ -35,6 +35,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Processors\IArticleProcessor.cs" />
+    <Compile Include="Processors\Implementations\ArticleMapper.cs" />
     <Compile Include="Processors\Implementations\ArticleProcessor.cs" />
+    <Compile Include="Processors\Implementations\ArticleProcessorUoW.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TinyblogController.cs" />
   </ItemGroup>
@@ -64,7 +70,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

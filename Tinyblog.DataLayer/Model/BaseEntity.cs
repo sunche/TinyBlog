@@ -12,6 +12,6 @@ namespace Tinyblog.DataLayer.Model
         /// Gets or sets the identifier.
         /// </summary>
         [Key]
-        public Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
     }
 }

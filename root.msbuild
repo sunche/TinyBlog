@@ -5,18 +5,25 @@
         <RemoveDir Directories="$(OutputPath)" Condition="Exists($(OutputPath))" />
     </Target>
 
+    
+
     <Target Name="Rebuild" DependsOnTargets="CleanDir">
         <MSBuild Projects="$(SolutionFileName)" />
     </Target>
 
-    <Target Name="RunTests" AfterTargets="Rebuild">
-        <CreateItem Include="Tinyblog.Tests\bin\$(Configuration)\*.Tests.dll">
+    <Target Name="CreateOutputPath" AfterTargets="Rebuild">
+        <MakeDir
+            Directories="$(OutputPath)"/>
+    </Target>
+
+    <Target Name="RunTests" AfterTargets="CreateOutputPath">
+        <CreateItem Include="$(TestsPath)\*.Tests.dll">
             <Output TaskParameter="Include" ItemName="TestAssemblies" />
         </CreateItem>
         <NUnit3 Assemblies="@(TestAssemblies)"
-                OutputXmlFile="$(OutputPath)/TestOutput.xml"/>
+                OutputXmlFile="$(OutputPath)/TestOutput.xml"
+                ToolPath="$(NUnitToolPath)"/>
     </Target>
-
 
     <Target Name="Package server files" AfterTargets="RunTests">
         <CreateItem Include="$(ServerFilesPath)\*.*">
@@ -33,7 +40,7 @@
         </CreateItem>
         <Zip ZipFileName="$(OutputPath)\client.zip"
              WorkingDirectory="$(ClientFilesPath)"
-             Files="@(ClientFiles)" />
+             Files="@(ClientFiles)"/>
     </Target>
 
     <Import Project="packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" />

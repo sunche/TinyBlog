@@ -7,5 +7,8 @@
         <Configuration>Release</Configuration>
         <ServerFilesPath>Tinyblog.Server\bin\$(Configuration)</ServerFilesPath>
         <ClientFilesPath>Tinyblog.Client\bin\$(Configuration)</ClientFilesPath>
+        <MSBuildExtensionsPath1>packages\MSBuildTasks.1.5.0.235\build</MSBuildExtensionsPath1>
+        <TestsPath>Tinyblog.Tests\bin\$(Configuration)</TestsPath>
+        <NUnitToolPath>packages\NUnit.ConsoleRunner.3.8.0\tools</NUnitToolPath>
     </PropertyGroup>
 </Project>

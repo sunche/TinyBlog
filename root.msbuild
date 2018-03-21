@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <Project DefaultTargets="Rebuild" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="15">
-
-    <Import Project="packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" />
-
     <Target Name="CleanDir">
-        <RemoveDir Directories="$(OutputPath)" Condition="Exists($(OutputPath))"/>
+        <RemoveDir Directories="$(OutputPath)" Condition="Exists($(OutputPath))" />
     </Target>
 
     <Target Name="Rebuild" DependsOnTargets="CleanDir">
-        <MSBuild Projects="$(SolutionFileName)" Properties="Configuration=Release;"/>
+        <MSBuild Projects="$(SolutionFileName)" />
     </Target>
 
-    <Target Name="Package server files" AfterTargets="Rebuild">
+    <Target Name="RunTests" AfterTargets="Rebuild">
+        <CreateItem Include="Tinyblog.Tests\bin\$(Configuration)\*.Tests.dll">
+            <Output TaskParameter="Include" ItemName="TestAssemblies" />
+        </CreateItem>
+        <NUnit3 Assemblies="@(TestAssemblies)"
+                OutputXmlFile="$(OutputPath)/TestOutput.xml"/>
+    </Target>
+
+
+    <Target Name="Package server files" AfterTargets="RunTests">
         <CreateItem Include="$(ServerFilesPath)\*.*">
-            <Output ItemName="ServerFiles" TaskParameter="Include"/>
+            <Output ItemName="ServerFiles" TaskParameter="Include" />
         </CreateItem>
-        <Zip ZipFileName="$(OutputPath)\server.zip" WorkingDirectory="$(ServerFilesPath)" Files="@(ServerFiles)"/>
+        <Zip ZipFileName="$(OutputPath)\server.zip"
+             WorkingDirectory="$(ServerFilesPath)"
+             Files="@(ServerFiles)" />
     </Target>
 
-    <Target Name="Package client files" AfterTargets="Rebuild">
+    <Target Name="Package client files" AfterTargets="RunTests">
         <CreateItem Include="$(ClientFilesPath)\*.*">
-            <Output ItemName="ClientFiles" TaskParameter="Include"/>
+            <Output ItemName="ClientFiles" TaskParameter="Include" />
         </CreateItem>
-        <Zip ZipFileName="$(OutputPath)\client.zip" WorkingDirectory="$(ClientFilesPath)" Files="@(ClientFiles)"/>
+        <Zip ZipFileName="$(OutputPath)\client.zip"
+             WorkingDirectory="$(ClientFilesPath)"
+             Files="@(ClientFiles)" />
     </Target>
-    
-    <Import Project="Common.props"/>
-	
+
+    <Import Project="packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" />
+    <Import Project="Common.props" />
+
 </Project>

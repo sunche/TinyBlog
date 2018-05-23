@@ -43,7 +43,9 @@
              Files="@(ClientFiles)"/>
     </Target>
 
-    <Import Project="packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" />
-    <Import Project="Common.props" />
-
+    <Import Project="Common.props"/>
+    <PropertyGroup>
+        <MSBuildExtensionsPath>packages\MSBuildTasks.1.5.0.235\build</MSBuildExtensionsPath>
+    </PropertyGroup>
+    <Import Project="$(MSBuildExtensionsPath)\MSBuildTasks.targets" />
 </Project>
